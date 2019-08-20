@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">EMS</a>
+      </div>
+      <ul class="nav navbar-nav">
+    <li ><a href="#">Welcome {{user}}</a></li>
+        <li class="active"><a href="#">Home</a></li>
+        <li><a href="createemp">Create Employee</a></li>
+        <li><a href="viewallemp">View Employees</a></li>
+
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+      </ul>
+    </div>
+  </nav>
+
+<div class="container" align="center">
+
+  <div class="alert alert-danger alert-dismissible">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>{{msg}}</strong>
+  </div>
+
+  <h2>View All Employee</h2>
+
+<table class="table table-hover">
+    <tr><th>EID</th><th>Name</th><th>Salary</th><th>Address</th></tr>
+
+{{#each data}}
+<tr> <td>{{this.eid}}</td>
+      <td>{{this.ename}}</td>
+      <td>{{this.salary}}</td>
+      <td>{{this.address}}</td>
+      <td><a href="/DeleteEmp?empid={{this.eid}}"
+    onClick="return confirm('Deleted????')"
+        class="glyphicon glyphicon-trash"></a></td>
+</tr>
+{{/each}}
+
+
+</table>
+
+
+
+  </div>
+
+
+
+
+
+</div>
+
+</body>
+</html>

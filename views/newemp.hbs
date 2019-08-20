@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">EMS</a>
+      </div>
+      <ul class="nav navbar-nav">
+    <li ><a href="#">Welcome {{user}}</a></li>
+        <li class="active"><a href="#">Home</a></li>
+        <li><a href="createemp">Create Employee</a></li>
+        <li><a href="viewallemp">View Employees</a></li>
+
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+      </ul>
+    </div>
+  </nav>
+
+
+<div class="container">
+  <h2>Employee form</h2>
+
+  <div class="alert alert-danger alert-dismissible">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>{{msg}}</strong>
+  </div>
+
+
+  <form action="/EmpInsert" method="post">
+    <div class="form-group">
+      <label for="Eid">Eid:</label>
+    <input type="text" class="form-control" name="eid"value="{{user}}">
+
+      <input type="text" class="form-control" name="eid">
+    </div>
+    <div class="form-group">
+      <label for="pwd">Name:</label>
+      <input type="text" class="form-control"  name="ename">
+    </div>
+    <div class="form-group">
+      <label for="pwd">Salary:</label>
+      <input type="text" class="form-control"  name="salary">
+    </div>
+    <div class="form-group">
+      <label for="pwd">Address:</label>
+      <textarea class="form-control"  name="address"></textarea>
+    </div>
+
+
+    <button type="submit" class="btn btn-default">Submit</button>
+  </form>
+</div>
+
+</body>
+</html>
