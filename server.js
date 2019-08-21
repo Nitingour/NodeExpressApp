@@ -48,11 +48,9 @@ con.query(sql,(err)=>{
     });
 
 }
-});
+});});
 
 
-
-});
 
 
 
@@ -66,27 +64,97 @@ response.render('newemp',{user:request.session.user}); //1) extention 2) locatio
 
 
 app.get('/viewallemp',(request,response)=>{
+if(request.session.user)
+{
 var sql="select * from employee";
 con.query(sql,(err,result)=>{
   if(err) throw err;
   else
-  response.render('viewemps',{data:result}); //1) extention 2) location
+  response.render('viewemps',{data:result,res:response}); //1) extention 2) location
 });
+}else {
+  response.render('index');
+}
 });
+
+
+var nodemailer = require('nodemailer');
+
+var transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'demoapitesing@gmail.com',
+    pass: 'xuvKxYB3j2'
+  }
+});
+
 app.post('/EmpInsert',(request,response)=>{
 var eid=request.body.eid;
 var ename=request.body.ename;
 var salary=request.body.salary;
 var address=request.body.address;
-var sql="insert into employee values(?,?,?,?)";
-var input=[eid,ename,salary,address];
+var email=request.body.emailid;
+var sql="insert into employee values(?,?,?,?,?,?)";
+
+var pwd= Math.random().toString(36).slice(-8);
+
+var input=[eid,ename,salary,address,email,pwd];
 sql=mysql.format(sql,input);
 con.query(sql,(err)=>{
   if(err) throw err;
   else
-  response.render('newemp',{msg:'Data Inserted'});
+  {
+
+    var mailOptions = {
+      from: 'demoapitesing@gmail.com',
+      to: email,
+      subject: 'EMS Account Details',
+      text: 'Hello '+ename+", your EMPID="+eid+" and password="+pwd
+    };
+
+    transporter.sendMail(mailOptions, function(err, info){
+      if (err)  throw err;
+        console.log('Email sent: ' + info.response);
+        response.render('newemp',{msg:'Data Inserted,and mail sent'});
+    });
+}
+
+
 })
 });
+
+app.get('/ShowEmp',(request,response)=>{
+var eid=request.query.empid;
+var sql="select * from employee where eid="+eid;
+con.query(sql,(err,result)=>{
+  if(err) throw err;
+  else
+    response.render('showemp',{emp:result});
+});
+});
+
+app.post('/EmpUpdate',(request,response)=>{
+var eid=request.body.eid;
+var ename=request.body.ename;
+var salary=request.body.salary;
+var address=request.body.address;
+var sql="update employee set ename=?,salary=?,address=? where eid=?";
+var input=[ename,salary,address,eid];
+sql=mysql.format(sql,input);
+con.query(sql,(err)=>{
+  if(err) throw err;
+  else{
+    var sql="select * from employee";
+    con.query(sql,(err,result)=>{
+      if(err) throw err;
+      else
+      response.render('viewemps',{data:result,msg:"Data Updated"}); //1) extention 2) location
+    });
+}
+
+})
+});
+
 
 
 
