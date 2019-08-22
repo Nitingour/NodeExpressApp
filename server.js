@@ -11,10 +11,22 @@ app.listen(3000,()=>{
 //To serv static content
 app.use(session({secret:"1234567"}))
 app.use(express.static('public'));
+
+
 //congigure view engine :Hbs
-var path=require('path');
-app.set('views',path.join(__dirname,'views')); //location
-app.set('view engine','hbs');//extension
+// var path=require('path');
+// app.set('views',path.join(__dirname,'views')); //location
+// app.set('view engine','hbs');//extension
+
+var hbs= require('express-handlebars');
+app.engine( 'hbs', hbs( {
+  extname: 'hbs',
+  defaultLayout: 'mainLayout',
+  layoutsDir: __dirname + '/views/layouts/'
+} ) );
+ app.set('view engine','hbs');//extension for other vies
+
+
 
 // caching disabled for every route
 app.use(function(req, res, next) {
@@ -87,6 +99,7 @@ var transporter = nodemailer.createTransport({
     pass: 'xuvKxYB3j2'
   }
 });
+//https://github.com/Nitingour/NodeExpressApp.git
 
 app.post('/EmpInsert',(request,response)=>{
 var eid=request.body.eid;
@@ -104,7 +117,6 @@ con.query(sql,(err)=>{
   if(err) throw err;
   else
   {
-
     var mailOptions = {
       from: 'demoapitesing@gmail.com',
       to: email,
