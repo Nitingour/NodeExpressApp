@@ -7,10 +7,12 @@
   <h2>View All Employee</h2>
 
 <table class="table table-hover">
-    <tr><th>EID</th><th>Name</th><th>Salary</th><th>Address</th></tr>
+    <tr><th>EID</th><th>Profilepic</th><th>Name</th><th>Salary</th><th>Address</th></tr>
 
 {{#each data}}
 <tr> <td>{{this.eid}}</td>
+<td><img src='/upload/{{this.profilepic}}' height="50" width="50"/></td>
+
       <td>{{this.ename}}</td>
       <td>{{this.salary}}</td>
       <td>{{this.address}}</td>

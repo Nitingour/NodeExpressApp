@@ -99,41 +99,82 @@ var transporter = nodemailer.createTransport({
     pass: 'xuvKxYB3j2'
   }
 });
-//https://github.com/Nitingour/NodeExpressApp.git
+
+const upload=require('express-fileupload');
+app.use(upload());
 
 app.post('/EmpInsert',(request,response)=>{
-var eid=request.body.eid;
-var ename=request.body.ename;
-var salary=request.body.salary;
-var address=request.body.address;
-var email=request.body.emailid;
-var sql="insert into employee values(?,?,?,?,?,?)";
-
-var pwd= Math.random().toString(36).slice(-8);
-
-var input=[eid,ename,salary,address,email,pwd];
-sql=mysql.format(sql,input);
-con.query(sql,(err)=>{
-  if(err) throw err;
-  else
+  console.log(request.files);
+  if(request.files)
   {
-    var mailOptions = {
-      from: 'demoapitesing@gmail.com',
-      to: email,
-      subject: 'EMS Account Details',
-      text: 'Hello '+ename+", your EMPID="+eid+" and password="+pwd
-    };
+   var eid=request.body.eid;
+   var ename=request.body.ename;
+   var salary=request.body.salary;
+   var address=request.body.address;
+   var email=request.body.emailid;
+   var pwd= Math.random().toString(36).slice(-8);
 
-    transporter.sendMail(mailOptions, function(err, info){
-      if (err)  throw err;
-        console.log('Email sent: ' + info.response);
-        response.render('newemp',{msg:'Data Inserted,and mail sent'});
+    var alldata=request.files.filename;
+    var filename=alldata.name;
+    var altfname=pwd+filename;
+    alldata.mv('./public/upload/'+altfname,(err)=>{
+      if(err) throw err;
+      else
+      {
+        var sql="insert into employee values(?,?,?,?,?,?,?)";
+        var input=[eid,ename,salary,address,email,pwd,altfname];
+        sql=mysql.format(sql,input);
+        con.query(sql,(err)=>{
+          if(err) throw err;
+          else
+          {
+              response.render('newemp',{msg:'Data Inserted & File Uploaded'});
+           }
+         });
+      }
     });
-}
 
+  }
 
-})
 });
+
+
+
+
+
+// app.post('/EmpInsert',(request,response)=>{
+// var eid=request.body.eid;
+// var ename=request.body.ename;
+// var salary=request.body.salary;
+// var address=request.body.address;
+// var email=request.body.emailid;
+// var sql="insert into employee values(?,?,?,?,?,?)";
+//
+// var pwd= Math.random().toString(36).slice(-8);
+//
+// var input=[eid,ename,salary,address,email,pwd];
+// sql=mysql.format(sql,input);
+// con.query(sql,(err)=>{
+//   if(err) throw err;
+//   else
+//   {
+//     var mailOptions = {
+//       from: 'demoapitesing@gmail.com',
+//       to: email,
+//       subject: 'EMS Account Details',
+//       text: 'Hello '+ename+", your EMPID="+eid+" and password="+pwd
+//     };
+//
+//     transporter.sendMail(mailOptions, function(err, info){
+//       if (err)  throw err;
+//         console.log('Email sent: ' + info.response);
+//         response.render('newemp',{msg:'Data Inserted,and mail sent'});
+//     });
+// }
+//
+//
+// })
+// });
 
 app.get('/ShowEmp',(request,response)=>{
 var eid=request.query.empid;
